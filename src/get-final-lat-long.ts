@@ -6,8 +6,6 @@ export const getFinalLatLong = (
 ): { finalLatitude: number; finalLongitude: number } => {
   const R = 6378.1; // Radius of the Earth in km
   const bearingRadians = (Math.PI * bearing) / 180; //Bearing is converted to radians.
-  console.log("cos", Math.cos(bearingRadians));
-  console.log("sin", Math.sin(bearingRadians));
   const d = horizontalRange / 1000; //Distance in km
 
   //lat2  52.20444 - the lat result I'm hoping for
