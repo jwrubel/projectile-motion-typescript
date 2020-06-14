@@ -11,6 +11,7 @@
   "author": "Conner Shoop (https://github.com/connershoop), James Wrubel (https://github.com/jwrubel)",
   "license": "MIT",
   "dependencies": {
+    "@turf/destination": "^6.0.1",
     "@turf/helpers": "^6.1.4",
     "@types/node": "^14.0.6",
     "integrate-adaptive-simpson": "^1.1.1",
