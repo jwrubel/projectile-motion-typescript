@@ -1,7 +1,8 @@
-import { degreesToRadians, radiansToDegrees } from '@turf/helpers';
+import { degreesToRadians, point } from '@turf/helpers';
+import destination from '@turf/destination';
 import { getTimeHeightAndDistanceOfFlight } from "./get-time-height-distance-of-flight";
-import { getFinalLatLong } from "./get-final-lat-long";
 import { adjustBearingAndDistanceForWind } from "./adjust-bearing-distance-for-wind";
+import { azimuthToBearing } from './azimuthToBearing';
 
 // constants 
 const GRAVITY = 9.80665; // m/s^2
@@ -14,12 +15,12 @@ const PROJECTILE_MASS = 0.145; // Mass of projectile (kg)
 // environment default parameters
 const RHO_AIR = 1.29; // Air density (kg/m^3)
 const WIND_SPEED = 0; // wind speed in m/s
-const WIND_BEARING = 0; // wind bearing in degrees
+const WIND_BEARING = 0; // wind bearing in degrees (0 - 360)
 
 interface ShotParams {
   initialCoords: Array<number>, // [latitude, longitude] pair
   thrust: number,               // The projectile's initial velocity (m/s)
-  azimuth: number,              // The projectile's initial bearing, in degrees
+  azimuth: number,              // The projectile's initial bearing, in degrees (0 to 360)
   elevation: number             // The initial firing angle (degrees)
 }
 interface ProjectileParams {
@@ -84,7 +85,7 @@ const calculateTrajectory = (
     horizontalRangeWithWind,
   } = adjustBearingAndDistanceForWind(
     horizontalRange,
-    degreesToRadians(azimuth),
+    azimuthToBearing(azimuth), // function takes bearing in -180 - 180
     timeOfFlight,
     windSpeed,
     windDirection,
@@ -94,13 +95,9 @@ const calculateTrajectory = (
     dragCoefficient
   );
 
+  const dest = destination(point([longitude, latitude]), horizontalRangeWithWind, bearingWithWind, {units: 'meters'})
   // get the final latitude, and final longitude of the projectile
-  const { finalLatitude, finalLongitude } = getFinalLatLong(
-    latitude,
-    longitude,
-    bearingWithWind,
-    horizontalRangeWithWind
-  );
+  const finalCoords = dest.geometry.coordinates
 
   /* DEBUG */
   /*
@@ -109,17 +106,17 @@ const calculateTrajectory = (
   console.log("Horizontal range (m)", horizontalRange);
   console.log("Horizontal range with wind (m)", horizontalRangeWithWind);
   console.log("Bearing (degrees)", azimuth);
-  console.log("Bearing with wind (degrees)", radiansToDegrees(bearingWithWind));
+  console.log("Bearing with wind (degrees)", bearingWithWind);
   console.log("Time of flight (s)", timeOfFlight);
-  console.log("Final latitude", finalLatitude);
-  console.log("Final longitude", finalLongitude);
+  console.log("Final latitude", finalCoords[1]);
+  console.log("Final longitude", finalCoords[0]);
   */
 
   return {
-    finalCoords: [finalLatitude, finalLongitude],
+    finalCoords: [finalCoords[1], finalCoords[0]], // return to [lat, long]
     distance: horizontalRange,
     duration: timeOfFlight
   }
 }
 
-export default calculateTrajectory;
+export { azimuthToBearing, calculateTrajectory };

@@ -7,20 +7,15 @@ test('calculates basic trajectory', () => {
     azimuth: 141,
     elevation: 60
   };
-  const projectileParams = {
-
-  };
-  const environmentParams = {
-
-  };
   
   const {
     finalCoords,
     distance,
     duration
-  } = calculateTrajectory(shotParams, projectileParams, environmentParams);
-  expect(+finalCoords[0].toFixed(3)).toBe(40.212);
-  expect(+finalCoords[1].toFixed(3)).toBe(-80.604);
+  } = calculateTrajectory(shotParams, {}, {});
+
+  expect(+finalCoords[0].toFixed(3)).toBe(40.209);
+  expect(+finalCoords[1].toFixed(3)).toBe(-80.603);
   expect(+distance.toFixed(3)).toBe(187.794);
   expect(+duration.toFixed(3)).toBe(11.792);
 });
@@ -37,17 +32,14 @@ test('applies projectile parameters', () => {
     radius: 0.02,
     mass: 0.77
   };
-  const environmentParams = {
-
-  };
   
   const {
     finalCoords,
     distance,
     duration
-  } = calculateTrajectory(shotParams, projectileParams, environmentParams);
-  expect(+finalCoords[0].toFixed(3)).toBe(40.229);
-  expect(+finalCoords[1].toFixed(3)).toBe(-80.603);
+  } = calculateTrajectory(shotParams, projectileParams, {});
+  expect(+finalCoords[0].toFixed(3)).toBe(40.196);
+  expect(+finalCoords[1].toFixed(3)).toBe(-80.589);
   expect(+distance.toFixed(3)).toBe(2067.467);
   expect(+duration.toFixed(3)).toBe(30.948);
 });
@@ -60,9 +52,7 @@ test('applies environment parameters', () => {
     azimuth: azimuth,
     elevation: 60
   };
-  const projectileParams = {
 
-  };
   const environmentParams = {
     airDensity: 1.22524, 
     windSpeed: 4.6,
@@ -73,9 +63,9 @@ test('applies environment parameters', () => {
     finalCoords,
     distance,
     duration
-  } = calculateTrajectory(shotParams, projectileParams, environmentParams);
-  expect(+finalCoords[0].toFixed(3)).toBe(40.212);
-  expect(+finalCoords[1].toFixed(3)).toBe(-80.604);
+  } = calculateTrajectory(shotParams, {}, environmentParams);
+  expect(+finalCoords[0].toFixed(3)).toBe(40.209);
+  expect(+finalCoords[1].toFixed(3)).toBe(-80.602);
   expect(+distance.toFixed(3)).toBe(196.025);
   expect(+duration.toFixed(3)).toBe(12.012);
 });
