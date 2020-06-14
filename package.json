@@ -8,8 +8,8 @@
     "test": "jest"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Conner Shoop (https://github.com/connershoop), James Wrubel (https://github.com/jwrubel)",
+  "license": "MIT",
   "dependencies": {
     "@turf/helpers": "^6.1.4",
     "@types/node": "^14.0.6",
