@@ -5,7 +5,6 @@ export const getTimeHeightAndDistanceOfFlight = (
   shotParameters: { initialVelocity: number; launchAngleInRadians: number },
   projectileParameters: {
     dragCoefficient: number;
-    radius: number;
     mass: number;
     crossSectionalArea: number;
   },
@@ -17,7 +16,6 @@ export const getTimeHeightAndDistanceOfFlight = (
   const { initialVelocity, launchAngleInRadians } = shotParameters;
   const {
     dragCoefficient,
-    radius,
     mass,
     crossSectionalArea,
   } = projectileParameters;

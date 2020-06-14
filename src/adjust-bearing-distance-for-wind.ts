@@ -1,3 +1,4 @@
+import { degreesToRadians, radiansToDegrees } from '@turf/helpers';
 export const adjustBearingAndDistanceForWind = (
   horizontalRange: number,
   bearing: number,
@@ -16,10 +17,11 @@ export const adjustBearingAndDistanceForWind = (
     (c * rho_air * a * Math.pow(windSpeed, 2) * Math.pow(timeOfFlight, 2)) /
     (m * 4); // 1/2 * a * t^2 = 1/2 * dragForce/mass * time^2
 
+  const windBearingRadians = degreesToRadians(windBearing);
   const distanceFromWindLat =
-    distanceFromWind * Math.sin((Math.PI * windBearing) / 180);
+    distanceFromWind * Math.sin((Math.PI * windBearingRadians) / 180);
   const distanceFromWindLon =
-    distanceFromWind * Math.cos((Math.PI * windBearing) / 180);
+    distanceFromWind * Math.cos((Math.PI * windBearingRadians) / 180);
 
   const horizontalRangeLon =
     horizontalRange * Math.cos((Math.PI * bearing) / 180) + distanceFromWindLon;
